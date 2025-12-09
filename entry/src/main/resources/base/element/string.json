@@ -1,0 +1,28 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "無廣告手機應用程式查閱巴士線、車站、預計到達時間，路線盡包九龍巴士(九巴)、龍運巴士、城巴、新大嶼山巴士、專線小巴 - 巴士到站預報 App"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "無廣告手機應用程式查閱巴士線、車站、預計到達時間，路線盡包九龍巴士(九巴)、龍運巴士、城巴、新大嶼山巴士、專線小巴 - 巴士到站預報 App"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "hkbus.app"
+    },
+    {
+      "name": "LOCATION_REASON",
+      "value": "我們會使用您的位置資訊來定位附近的車站。"
+    },
+    {
+      "name": "LOCATION_IN_BACKGROUND_REASON",
+      "value": "我們將使用地理位置權限來提醒您到達車站"
+    },
+    {
+      "name": "NOTIFICATION_REASON",
+      "value": "我們將使用通知權限來提醒您到達車站"
+    }
+  ]
+}

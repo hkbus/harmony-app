@@ -1,0 +1,56 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "storeFile": "/Users/chun/git/hkbus-app-huawei/cert/app_hkbus_huawei.p12",
+          "storePassword": "000000187A48F6396DD4D3F469FA1FA714257EBF28114A1A5CFB43D4EC1F89E13AAED8ADDA46B47E",
+          "keyAlias": "app.p12",
+          "keyPassword": "000000185C86E23FE283EE7B37A0DD9E4CEA2244AD48E9BCA2860F31F474A0694AE35E883FC8B424",
+          "signAlg": "SHA256withECDSA",
+          "profile": "/Users/chun/git/hkbus-app-huawei/cert/hkbus.appRelease.p7b",
+          "certpath": "/Users/chun/git/hkbus-app-huawei/cert/app_hkbus_huawei_release.cer"
+        }
+      }
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "targetSdkVersion": "5.0.5(17)",
+        "compatibleSdkVersion": "5.0.5(17)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "caseSensitiveCheck": true,
+            "useNormalizedOHMUrl": true
+          }
+        }
+      }
+    ],
+    "buildModeSet": [
+      {
+        "name": "debug",
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}
