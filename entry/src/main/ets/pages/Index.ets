@@ -8,6 +8,7 @@ import { geoLocationManager } from "@kit.LocationKit"
 import getDistance from '../utils';
 import { systemShare } from '@kit.ShareKit';
 import { uniformTypeDescriptor as utd } from "@kit.ArkData";
+import { window } from '@kit.ArkUI';
 
 let atManager = abilityAccessCtrl.createAtManager();
 
@@ -15,6 +16,7 @@ let atManager = abilityAccessCtrl.createAtManager();
 @Component
 struct Index {
   controller: webview.WebviewController = new webview.WebviewController();
+  dialogController: CustomDialogController | null = null;
   uiContext: UIContext = this.getUIContext();
   context: Context = getContext(this);
   bridger: HarmonyBridger = new HarmonyBridger(this.uiContext, this.context);
@@ -29,49 +31,52 @@ struct Index {
 
   build() {
     Column() {
-      Web({
-        src: 'https://hkbus.app',
-        controller: this.controller,
-      })
-        .onSslErrorEvent(event => {
-          event.handler.handleConfirm();
-        })
-        .javaScriptAccess(true)
-        .domStorageAccess(true)
-        .onPageBegin(() => {
-          this.controller.setNetworkAvailable(true)
-        })
-        .geolocationAccess(true)
-        .onGeolocationShow((event) => {
-          let context : Context | undefined = this.uiContext.getHostContext() as common.UIAbilityContext;
-          atManager.requestPermissionsFromUser(context, ["ohos.permission.APPROXIMATELY_LOCATION", "ohos.permission.LOCATION"]).then((data) => {
-            console.info('data:' + JSON.stringify(data));
-            console.info('data permissions:' + data.permissions);
-            console.info('data authResults:' + data.authResults);
-            if ( data.authResults[0] === 0 && data.authResults[1] === 0 ) {
-              event.geolocation.invoke(event.origin, true, true)
-            } else {
-              event.geolocation.invoke(event.origin, false, false)
-            }
-          }).catch((error: BusinessError) => {
-            console.error(`Failed to request permissions from user. Code is ${error.code}, message is ${error.message}`);
-          })
-        })
-        .javaScriptProxy({
-          object: this.bridger,
-          name: "harmonyBridger",
-          methodList: ["share", "setAlarm", "unsetAlarm", "toggleAlarm"],
+      Stack() {
+        Web({
+          src: 'https://hkbus.app',
           controller: this.controller,
         })
-        .runJavaScriptOnDocumentStart([
-          {
-            script: runFirst,
-            scriptRules: ["*"]
-          }
-        ])
-        .height('100%')
-        .width('100%')
-        .backgroundColor("#00000000")
+          .onSslErrorEvent(event => {
+            event.handler.handleConfirm();
+          })
+          .javaScriptAccess(true)
+          .domStorageAccess(true)
+          .onPageBegin(() => {
+            this.controller.setNetworkAvailable(true)
+          })
+          .geolocationAccess(true)
+          .onGeolocationShow((event) => {
+            let context: Context | undefined = this.uiContext.getHostContext() as common.UIAbilityContext;
+            atManager.requestPermissionsFromUser(context,
+              ["ohos.permission.APPROXIMATELY_LOCATION", "ohos.permission.LOCATION"]).then((data) => {
+              console.info('data:' + JSON.stringify(data));
+              console.info('data permissions:' + data.permissions);
+              console.info('data authResults:' + data.authResults);
+              if (data.authResults[0] === 0 && data.authResults[1] === 0) {
+                event.geolocation.invoke(event.origin, true, true)
+              } else {
+                event.geolocation.invoke(event.origin, false, false)
+              }
+            }).catch((error: BusinessError) => {
+              console.error(`Failed to request permissions from user. Code is ${error.code}, message is ${error.message}`);
+            })
+          })
+          .javaScriptProxy({
+            object: this.bridger,
+            name: "harmonyBridger",
+            methodList: ["share", "setAlarm", "unsetAlarm", "toggleAlarm", "openUrl", "setTheme"],
+            controller: this.controller,
+          })
+          .runJavaScriptOnDocumentStart([
+            {
+              script: runFirst,
+              scriptRules: ["*"]
+            }
+          ])
+          .height('100%')
+          .width('100%')
+          .backgroundColor("#FF000000")
+      }
     }
   }
 }
@@ -80,10 +85,20 @@ class HarmonyBridger {
   uiContext: UIContext;
   context: Context;
   stopId: string | null;
+
   constructor(uiContext: UIContext, context: Context) {
     this.uiContext = uiContext;
     this.context = context;
     this.stopId = null;
+  }
+
+  async openUrl (url: string) {
+    console.log(url)
+    let context = this.uiContext.getHostContext() as common.UIAbilityContext;
+    context.openLink(url, {
+      appLinkingOnly: false,
+      parameters: {},
+    })
   }
 
   async toggleAlarm(stopId: string, location: StopLocation): Promise<string> {
@@ -211,6 +226,13 @@ class HarmonyBridger {
       selectionMode: systemShare.SelectionMode.SINGLE,
     });
     return Promise.resolve();
+  }
+
+  setTheme(theme: "light" | "dark") {
+    let windowClass = AppStorage.get<window.Window>('windowClass') as window.Window;
+    windowClass.setWindowSystemBarProperties({
+      statusBarContentColor: theme === "light" ? "#FF000000" : "#FFFFFFFF"
+    });
   }
 }
 

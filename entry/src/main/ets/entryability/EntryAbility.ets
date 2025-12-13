@@ -23,8 +23,12 @@ export default class EntryAbility extends UIAbility {
         hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));
         return;
       }
+      let windowClass = windowStage.getMainWindowSync();
+      AppStorage.setOrCreate('windowClass', windowClass);
+
       hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');
       windowStage.getMainWindowSync().setWindowBackgroundColor('#00000000');
+      windowStage.getMainWindowSync().setWindowLayoutFullScreen(true);
     });
   }
 
