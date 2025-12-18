@@ -233,10 +233,10 @@ class HarmonyBridger {
   }
 
   setTheme(theme: "light" | "dark") {
-    let windowClass = AppStorage.get<window.Window>('windowClass') as window.Window;
-    windowClass.setWindowSystemBarProperties({
-      statusBarContentColor: theme === "light" ? "#FF000000" : "#FFFFFFFF"
-    });
+    // let windowClass = AppStorage.get<window.Window>('windowClass') as window.Window;
+    // windowClass.setWindowSystemBarProperties({
+    //   statusBarContentColor: theme === "light" ? "#FF000000" : "#FFFFFFFF"
+    // });
   }
 }
 

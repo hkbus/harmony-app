@@ -27,8 +27,8 @@ export default class EntryAbility extends UIAbility {
       AppStorage.setOrCreate('windowClass', windowClass);
 
       hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');
-      windowStage.getMainWindowSync().setWindowBackgroundColor('#00000000');
-      windowStage.getMainWindowSync().setWindowLayoutFullScreen(true);
+      windowStage.getMainWindowSync().setWindowBackgroundColor('#FF000000');
+      windowStage.getMainWindowSync().setWindowLayoutFullScreen(false);
     });
   }
 
