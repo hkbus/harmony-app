@@ -23,7 +23,11 @@ struct Index {
 
   aboutToAppear(): void {
     try {
-      webview.WebviewController.setWebDebuggingAccess(true);
+      let windowClass = AppStorage.get<window.Window>('windowClass') as window.Window;
+      windowClass.setWindowSystemBarProperties({
+        statusBarContentColor: "#FFFFFFFF"
+      });
+      webview.WebviewController.setWebDebuggingAccess(false);
     } catch (error) {
       console.error(`ErrorCode: ${(error as BusinessError).code},  Message: ${(error as BusinessError).message}`);
     }
